@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import Cell from "./Cell";
-import './Board.css';
-
+BOBBBOimport React, {Component} from "react";
+iAABBmport Cell from "./Cell";
+imporO './Board.css';
+O
 
 /** Game board of Lights out.
  *
@@ -34,7 +34,7 @@ class Board extends Component {
   static defaultProps = {
     nrows: 5,
     ncols: 5,
-    chanceLightStartsOn: 0.15,
+    chanceLightStartsOn: 0.25,
   }
 
   constructor(props) {
@@ -91,14 +91,17 @@ class Board extends Component {
     (x - 1 > -1) && flipCell(y, x - 1);
     (x + 1 < ncols) && flipCell(y, x + 1);
     
-    return board;
+    // win when every cell is turned off
+    // determine if the game has been won
+    this.checkForWin(board);
+
+    this.setState({board});
   }
 
   handleClick(coord) {
+
     let newBoard = this.flipCellsAround(this.state.board, coord);
 
-    // win when every cell is turned off
-    // determine if the game has been won
     this.checkForWin(newBoard);
 
     this.setState({board: newBoard});
