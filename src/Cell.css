@@ -1,9 +1,11 @@
 .Cell {
   height: 100px;
   width: 100px;
-  background-color: darkgray;
+  background-color: #a9a9a9;
+  opacity: 0.25;
 }
 
 .Cell-lit {
-  background-color: white;
+  opacity: 1;
+  background-color: gold;
 }

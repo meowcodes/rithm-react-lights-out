@@ -119,11 +119,11 @@ class Board extends Component {
 
   render() {
     return(
-      <div>
+      <div className="Board">
         { this.state.hasWon &&  <p>You win!</p> }
         { !this.state.hasWon &&  
           <table><tbody>{ this.state.board.map( (row, rIdx) => {
-            return<tr>{row.map( (cell, cIdx) => {
+            return<tr key={`row-${rIdx}`}>{row.map( (cell, cIdx) => {
                 return<Cell 
                     key={`${rIdx}-${cIdx}`} 
                     isLit={ cell } 
