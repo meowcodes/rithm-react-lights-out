@@ -31,17 +31,39 @@ import './Board.css';
 
 class Board extends Component {
 
+  static defaultProps = {
+    nrows: 5,
+    ncols: 5,
+    chanceLightStartsOn: 0.25,
+  }
+
   constructor(props) {
     super(props);
 
-    // TODO: set initial state
+    // set initial state
+    this.state = {
+      hasWon: false,
+      board: this.createBoard(),
+    }
   }
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
   createBoard() {
     let board = [];
-    // TODO: create array-of-arrays of true/false values
+    
+    // create array-of-arrays of true/false values
+    for(let r=0; r < this.props.nrows; r++){
+      board[r] = [];
+      for(let c=0; c < this.props.ncols; c++){
+        if(Math.random() < 0.25){
+          board[r].push(true);
+        } else {
+          board[r].push(false);
+        }
+      }
+    }
+    console.log(board);
     return board
   }
 
@@ -61,26 +83,52 @@ class Board extends Component {
       }
     }
 
-    // TODO: flip this cell and the cells around it
-
+    // flip this cell and the cells around it
+    flipCell(y, x);
+    (y - 1 > -1) && flipCell(y - 1, x);
+    (y + 1 < nrows) && flipCell(y + 1, x);
+    (x - 1 > -1) && flipCell(y, x - 1);
+    (x + 1 < ncols) && flipCell(y, x + 1);
+    
     // win when every cell is turned off
-    // TODO: determine is the game has been won
+    // determine if the game has been won
+    let hasWon = this.checkForWin(board);
 
     this.setState({board, hasWon});
   }
 
+  checkForWin(board) {
+    for(let r=0; r < this.props.nrows; r++){
+      for(let c=0; c < this.props.ncols; c++){
+        if(board[r][c] === true){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 
   /** Render game board or winning message. */
 
   render() {
-
-    // if the game is won, just show a winning msg & render nothing else
-
-    // TODO
-
-    // make table board
-
-    // TODO
+    return(
+      <div>
+        { this.state.hasWon &&  <p>You win!</p> }
+        { !this.state.hasWon &&  
+          <table><tbody>{ this.state.board.map( (row, rIdx) => {
+            return<tr>{row.map( (cell, cIdx) => {
+                return<Cell 
+                    key={`${rIdx}-${cIdx}`} 
+                    isLit={ cell } 
+                    flipCellsAroundMe={ () => this.flipCellsAround(`${rIdx}-${cIdx}`)} 
+                  />
+            })}
+            </tr>
+          }) 
+        }</tbody></table>
+        } 
+      </div>
+    );
   }
 }
 
